@@ -257,7 +257,7 @@
   }
 
   .bold-24 {
-    @apply text-[24px] font-[700] leading-[120%];
+    @apply text-[24px] font-[200] leading-[120%];
   }
 
   .bold-22 {
