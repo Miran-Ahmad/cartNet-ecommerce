@@ -4,7 +4,7 @@ import all_products from "../assets/all_products";
 import Item from "../components/Item";
 import { Link } from "react-router-dom";
 
-const Category = (banner, category) => {
+const Category = ({ category, banner }) => {
   return (
     <section className="max-padd-container bg-primary">
       <div>

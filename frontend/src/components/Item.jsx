@@ -4,9 +4,19 @@ import { Link } from "react-router-dom";
 
 const Item = ({ id, name, image, old_price, new_price }) => {
   return (
-    <Link to={`/product/${id}`} className="bg-white p-4 rounded-xl relative">
+    <Link
+      onClick={window.scrollTo(0, 0)}
+      to={`/product/${id}`}
+      className="bg-white p-4 rounded-xl relative"
+    >
       <div className="flexCenter">
-        <img src={image} alt="" height={211} width={211} className="rounded-lg drop-shadow-xl absolute bottom-44" />
+        <img
+          src={image}
+          alt=""
+          height={211}
+          width={211}
+          className="rounded-lg drop-shadow-xl absolute bottom-44"
+        />
       </div>
       <div className="flex flex-col gap-y-3 pt-24">
         <h4 className="line-clamp-2 medium-16">{name}</h4>
