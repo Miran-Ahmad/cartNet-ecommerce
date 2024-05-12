@@ -1,8 +1,10 @@
-import React from "react";
+import React, { useContext } from "react";
 import { FaHeart, FaStar } from "react-icons/fa6";
+import { ShopContext } from "../context/ShopContext";
 
 const ProductDisplay = (props) => {
   const { product } = props;
+  const { addToCart } = useContext(ShopContext);
 
   return (
     <section className="max-padd-container flex flex-col gap-8 xl:flex-row bg-primary py-4">
@@ -83,7 +85,14 @@ const ProductDisplay = (props) => {
             </div>
           </div>
           <div className="flex gap-3 mb-8 max-w-[555px]">
-            <button className="btn-dark rounded-md">Add to Cart</button>
+            <button
+              onClick={() => {
+                addToCart(product.id);
+              }}
+              className="btn-dark rounded-md"
+            >
+              Add to Cart
+            </button>
             <button className="btn-secondary rounded-md !py-4">
               <FaHeart />
             </button>

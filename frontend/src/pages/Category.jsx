@@ -1,10 +1,12 @@
-import React from "react";
+import React, { useContext } from "react";
 import { VscSettings } from "react-icons/vsc";
-import all_products from "../assets/all_products";
 import Item from "../components/Item";
 import { Link } from "react-router-dom";
+import { ShopContext } from "../context/ShopContext";
 
 const Category = ({ category, banner }) => {
+  const { all_products } = useContext(ShopContext);
+
   return (
     <section className="max-padd-container bg-primary">
       <div>

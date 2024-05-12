@@ -7,6 +7,8 @@ import Footer from "./components/Footer";
 import clothingbanner from "./assets/clothingbanner.png";
 import electronicsbanner from "./assets/electronicsbanner.png";
 import cosmeticsbanner from "./assets/cosmeticsbanner.png";
+import Cart from "./pages/Cart";
+import Login from "./pages/Login";
 
 export default function App() {
   return (
@@ -34,8 +36,8 @@ export default function App() {
           <Route path="/product" element={<Product />}>
             <Route path=":productId" element={<Product />} />
           </Route>
-          {/* <Route path="cart-page" element={<Cart />} />
-          <Route path="login" element={<Login />} /> */}
+          <Route path="cart-page" element={<Cart />} />
+          <Route path="login" element={<Login />} />
         </Routes>
         <Footer />
       </BrowserRouter>
