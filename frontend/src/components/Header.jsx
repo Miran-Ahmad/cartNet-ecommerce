@@ -77,7 +77,7 @@ const Header = () => {
                 </span>
               </NavLink>
               <NavLink
-                to={"/"}
+                to={"/login"}
                 className={
                   "btn-secondary flexCenter gap-x-2 medium-16 rounded-xl"
                 }
