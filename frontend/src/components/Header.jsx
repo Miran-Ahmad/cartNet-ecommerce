@@ -29,7 +29,7 @@ const Header = () => {
   }, [menuOpened]); //dependency array ensures that the effect runs when menuOpened changes
 
   return (
-    <header className="max-padd-container w-full z-50">
+    <header className="max-padd-container w-full z-50 bg-primary">
       <div className="flexBetween py-3">
         {/* logo */}
         <Link to={"/"} className="flex items-center gap-x-2">
