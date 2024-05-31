@@ -7,6 +7,7 @@ const jwt = require("jsonwebtoken");
 const multer = require("multer");
 const path = require("path");
 const cors = require("cors");
+const { error } = require('console');
 
 app.use(express.json());
 app.use(cors());
@@ -36,7 +37,8 @@ app.use('/images', express.static('upload/images'))
 app.post("/upload", upload.single('product'), (req, res) => {
     res.json({
         success: 1,
-        image_url: process.env.IMG_URL,
+        image_url: `http://localhost:${port}/images/${req.file.filename}`,
+        // image_url: process.env.IMG_URL,
     })
 })
 
@@ -51,6 +53,10 @@ const Product = mongoose.model("Product", {
         required: true,
     },
     image: {
+        type: String,
+        required: true,
+    },
+    category: {
         type: String,
         required: true,
     },
@@ -121,6 +127,80 @@ app.get('/allproducts', async (req, res) => {
     console.log("All Products Fetched");
     res.send(products);
 })
+
+//schema for user mode
+const User = mongoose.model('User', {
+    name: {
+        type: String,
+    },
+    email: {
+        type: String,
+        unique: true,
+    },
+    password: {
+        type: String,
+    },
+    cartData: {
+        type: Object,
+    },
+    date: {
+        type: Date,
+        default: Date.now,
+    },
+});
+
+//creating endpoint for registering user
+app.post('/signup', async (req, res) => {
+    let check = await User.findOne({ email: req.body.email });
+    if (check) {
+        return res.status(404).json({
+            success: false,
+            errors: "Existing user found with same email",
+        });
+    }
+    let cart = {};
+    for (let i = 0; i < 300; i++) {
+        cart[i] = 0;
+    }
+    const user = new User({
+        name: req.body.name,
+        email: req.body.email,
+        password: req.body.password,
+        cartData: cart,
+    })
+    await user.save();
+    const data = {
+        user: {
+            id: user.id,
+        },
+    };
+    const token = jwt.sign(data, "secret_ecom");
+    res.json({ success: true, token })
+});
+
+//creating endpoint for user login
+app.post('/login', async (req, res) => {
+    let user = await User.findOne({ email: req.body.email });
+    if (user) {
+        const passMatch = req.body.password === user.password;
+        if (passMatch) {
+            const data = {
+                user: {
+                    id: user.id,
+                },
+            };
+            const token = jwt.sign(data, "secret_ecom");
+            res.json({ success: true, token });
+        }
+        else {
+            res.json({ success: false, errors: "Wrong Password" });
+        }
+    }
+    else {
+        res.json({ success: false, errors: "wrong email address" });
+    }
+});
+
 
 app.listen(port, (error) => {
     if (!error) {
