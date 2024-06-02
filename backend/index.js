@@ -56,9 +56,12 @@ const upload = multer({ storage: storage });
 // Creating endpoint for images
 app.use('/images', express.static(uploadDir));
 app.post("/upload", upload.single('product'), (req, res) => {
+    const protocol = req.protocol;
+    const host = req.get('host');
+    const baseUrl = `${protocol}://${host}`;
     res.json({
         success: 1,
-        image_url: `http://localhost:${port}/images/${req.file.filename}`,
+        image_url: `${baseUrl}/images/${req.file.filename}`,
     });
 });
 
@@ -218,7 +221,7 @@ app.post('/addtocart', fetchUser, async (req, res) => {
         let userData = await User.findById(req.user);
         userData.cartData[req.body.itemId] = (userData.cartData[req.body.itemId] || 0) + 1;
         await User.findByIdAndUpdate(req.user, { cartData: userData.cartData });
-        res.send({success: true});
+        res.send({ success: true });
     } catch (error) {
         res.status(500).json({ success: false, error: error.message });
     }
@@ -232,7 +235,7 @@ app.post('/removefromcart', fetchUser, async (req, res) => {
             userData.cartData[req.body.itemId] -= 1;
         }
         await User.findByIdAndUpdate(req.user, { cartData: userData.cartData });
-        res.send({success: true});
+        res.send({ success: true });
     } catch (error) {
         res.status(500).json({ success: false, error: error.message });
     }
