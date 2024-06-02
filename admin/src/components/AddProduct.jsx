@@ -128,6 +128,7 @@ const AddProduct = () => {
         }}
         className="btn-dark rounded-ld mt-4 flexCenter gap-x-1"
       >
+        <MdAdd/>
         Add Product
       </button>
     </div>
