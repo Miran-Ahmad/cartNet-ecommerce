@@ -16,7 +16,7 @@ const Login = () => {
   const login = async () => {
     console.log("login executed", formData);
     let responseData;
-    await fetch("http://localhost:4000/login", {
+    await fetch("https://cartnet-ecommerce.onrender.com/login", {
       method: "POST",
       headers: {
         Accept: "application/json",
@@ -38,7 +38,7 @@ const Login = () => {
   const signup = async () => {
     console.log("signup executed", formData);
     let responseData;
-    await fetch("http://localhost:4000/signup", {
+    await fetch("https://cartnet-ecommerce.onrender.com/signup", {
       method: "POST",
       headers: {
         Accept: "application/json",
@@ -64,9 +64,9 @@ const Login = () => {
         <div className="flex flex-col gap-4 mt-7">
           {state === "Sign Up" ? (
             <input
-              name="username"
+              name="name"
               type="text"
-              value={formData.username}
+              value={formData.name}
               onChange={changeHandler}
               placeholder="Your Name"
               className="h-8 w-full pl-5 bg-white outline-none rounded-xl text-sm"
