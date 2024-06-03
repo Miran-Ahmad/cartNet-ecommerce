@@ -2,13 +2,13 @@ const express = require("express");
 const app = express();
 const mongoose = require("mongoose");
 const jwt = require("jsonwebtoken");
-const multer = require("multer");
 const path = require("path");
 const cors = require("cors");
 const bcrypt = require("bcrypt");
 const { body, validationResult } = require('express-validator');
-const fs = require('fs');
-// const helmet = require('helmet');
+const fileUpload = require("express-fileupload");
+const cloudinary = require("cloudinary").v2;
+const helmet = require('helmet');
 const rateLimit = require('express-rate-limit');
 require('dotenv').config();
 
@@ -18,17 +18,13 @@ const dbUri = process.env.DB_URI;
 
 app.use(express.json());
 app.use(cors());
-// app.use(helmet.crossOriginResourcePolicy({ policy: "cross-origin" }));
+app.use(helmet.crossOriginResourcePolicy({ policy: "cross-origin" }));
 app.use(rateLimit({
     windowMs: 15 * 60 * 1000, // 15 minutes
     max: 100 // limit each IP to 100 requests per windowMs
 }));
 
-// Ensure the upload directory exists
-const uploadDir = './upload/images';
-// if (!fs.existsSync(uploadDir)){
-//   fs.mkdirSync(uploadDir, { recursive: true });
-// }
+app.use(fileUpload({ useTempFiles: true }));
 
 // Database connection
 mongoose.connect((process.env.DB_URI), {
@@ -43,26 +39,40 @@ app.get("/", (req, res) => {
     res.send("Express app is running");
 });
 
-// Image storage
-const storage = multer.diskStorage({
-    destination: uploadDir,
-    filename: (req, file, cb) => {
-        return cb(null, `${file.fieldname}_${Date.now()}${path.extname(file.originalname)}`);
-    }
+// Configure Cloudinary
+cloudinary.config({
+    cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
+    api_key: process.env.CLOUDINARY_API_KEY,
+    api_secret: process.env.CLOUDINARY_API_SECRET
 });
 
-const upload = multer({ storage: storage });
 
-// Creating endpoint for images
-app.use('/images', express.static(uploadDir));
-app.post("/upload", upload.single('product'), (req, res) => {
-    const protocol = req.protocol;
-    const host = req.get('host');
-    const baseUrl = `${protocol}://${host}`;
-    res.json({
-        success: 1,
-        image_url: `${baseUrl}/images/${req.file.filename}`,
-    });
+// Endpoint for uploading images directly to Cloudinary
+app.post("/upload", async (req, res) => {
+    if (!req.files || Object.keys(req.files).length === 0) {
+        return res.status(400).json({ success: 0, error: "No files were uploaded." });
+    }
+
+    let productImage = req.files.product;
+
+    try {
+        let result = await cloudinary.uploader.upload(productImage.tempFilePath, {
+            folder: "uploads", // Folder name in Cloudinary
+            public_id: `product_${Date.now()}`, // Public ID for the file in Cloudinary
+            resource_type: "auto" // Detect the file type
+        });
+
+        res.json({
+            success: 1,
+            image_url: result.secure_url // Cloudinary URL of the uploaded image
+        });
+    } catch (error) {
+        res.status(500).json({
+            success: 0,
+            error: "Internal Server Error",
+            details: error.message
+        });
+    }
 });
 
 // Schema for creating products
