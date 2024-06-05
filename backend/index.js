@@ -232,6 +232,17 @@ app.post('/addtocart', fetchUser, async (req, res) => {
     }
 });
 
+app.get('/products/:productId', (req, res) => {
+    const productId = parseInt(req.params.productId);
+    const product = allProducts.find(p => p.id === productId);
+
+    if (product) {
+        res.json(product);
+    } else {
+        res.status(404).json({ message: 'Product not found' });
+    }
+});
+
 // Endpoint to remove product from cart
 app.post('/removefromcart', fetchUser, async (req, res) => {
     try {
