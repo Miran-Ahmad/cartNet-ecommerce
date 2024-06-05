@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Swiper, SwiperSlide } from "swiper/react";
 import "swiper/css";
 import LATEST from "../assets/latest";
@@ -6,6 +6,15 @@ import { Link } from "react-router-dom";
 import { RiShoppingCart2Line } from "react-icons/ri";
 
 const RelatedProducts = () => {
+
+  const [relatedProducts, setRelatedProducts] = useState([])
+
+  useEffect(() => {
+    fetch("https://cartnet-ecommerce.onrender.com/popularproducts")
+      .then((response) => response.json())
+      .then((data) => setRelatedProducts(data));
+  }, []);
+
   return (
     <div>
       <h4 className="border-l-4 pl-2 border-secondary bold-20">
@@ -30,7 +39,7 @@ const RelatedProducts = () => {
           }}
           className="h-[188px] mt-5"
         >
-          {LATEST.map((item, i) => (
+          {relatedProducts.map((item, i) => (
             <SwiperSlide key={i}>
               <Link
                 onClick={window.scrollTo(0, 0)}

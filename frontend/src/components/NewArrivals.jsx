@@ -2,12 +2,13 @@ import React, { useEffect, useState } from "react";
 import Item from "./Item";
 
 const NewArrivals = () => {
+  const [new_collection, setNew_collection] = useState([]);
 
-  const [new_collection, setNew_collection] = useState([])
-
-  useEffect(()=>{
-    fetch('https://cartnet-ecommerce.onrender.com/newcollections').then((response)=> response.json()).then((data)=>setNew_collection(data));
-  }, [])
+  useEffect(() => {
+    fetch("https://cartnet-ecommerce.onrender.com/newcollections")
+      .then((response) => response.json())
+      .then((data) => setNew_collection(data));
+  }, []);
 
   return (
     <section className="max-padd-container bg-primary p-12 xl:py-28">
