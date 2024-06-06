@@ -40,7 +40,7 @@ const AddProduct = () => {
       });
     if (responseData.success) {
       product.image = responseData.image_url;
-    //   console.log(product);
+      //   console.log(product);
       await fetch("https://cartnet-ecommerce.onrender.com/addproduct", {
         method: "POST",
         headers: {
@@ -128,7 +128,7 @@ const AddProduct = () => {
         }}
         className="btn-dark rounded-ld mt-4 flexCenter gap-x-1"
       >
-        <MdAdd/>
+        <MdAdd />
         Add Product
       </button>
     </div>

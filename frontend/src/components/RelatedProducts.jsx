@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { Swiper, SwiperSlide } from "swiper/react";
 import "swiper/css";
-import LATEST from "../assets/latest";
 import { Link } from "react-router-dom";
 import { RiShoppingCart2Line } from "react-icons/ri";
 

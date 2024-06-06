@@ -14,7 +14,7 @@ const Login = () => {
   };
 
   const login = async () => {
-    console.log("login executed", formData);
+    // console.log("login executed", formData);
     let responseData;
     await fetch("https://cartnet-ecommerce.onrender.com/login", {
       method: "POST",
@@ -36,7 +36,7 @@ const Login = () => {
   };
 
   const signup = async () => {
-    console.log("signup executed", formData);
+    // console.log("signup executed", formData);
     let responseData;
     await fetch("https://cartnet-ecommerce.onrender.com/signup", {
       method: "POST",

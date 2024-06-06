@@ -1,16 +1,43 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import ProductHd from "../components/ProductHd";
 import { useParams } from "react-router-dom";
-import all_products from "../assets/all_products";
 import ProductDisplay from "../components/ProductDisplay";
 import ProductDescription from "../components/ProductDescription";
 import PopularProducts from "../components/PopularProducts";
 
 const Product = () => {
   const { productId } = useParams();
-  console.log("productId: ", productId);
+  const [product, setProduct] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
 
-  const product = all_products.find((e) => e.id == Number(productId));
+  useEffect(() => {
+    const fetchProduct = async () => {
+      try {
+        const response = await fetch(`https://cartnet-ecommerce.onrender.com/products/${productId}`);
+        if (!response.ok) {
+          throw new Error("Network response was not ok");
+        }
+        const data = await response.json();
+        setProduct(data);
+      } catch (error) {
+        setError(error.message);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchProduct();
+  }, [productId]);
+
+  if (loading) {
+    return <div>Loading...</div>;
+  }
+
+  if (error) {
+    return <div>Error: {error}</div>;
+  }
+
   if (!product) {
     return <div>Product not found!</div>;
   }

@@ -7,6 +7,11 @@ import { ShopContext } from "../context/ShopContext";
 const Category = ({ category, banner }) => {
   const { all_products } = useContext(ShopContext);
 
+  const filteredProducts = all_products.filter(
+    (item) => item.category === category
+  );
+  // console.log(`Filtered Products for ${category}:`, filteredProducts); // Debugging line
+
   return (
     <section className="max-padd-container bg-primary">
       <div>

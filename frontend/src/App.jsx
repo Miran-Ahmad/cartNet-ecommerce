@@ -24,20 +24,18 @@ export default function App() {
           <Route
             path="/cosmetics"
             element={
-              <Category category={"cosmetics"} banner={cosmeticsbanner} />
+              <Category category={"Cosmetics"} banner={cosmeticsbanner} />
             }
           />
           <Route
             path="/electronics"
             element={
-              <Category category={"electronics"} banner={electronicsbanner} />
+              <Category category={"Electronics"} banner={electronicsbanner} />
             }
           />
-          <Route path="/product" element={<Product />}>
-            <Route path=":productId" element={<Product />} />
-          </Route>
-          <Route path="cart-page" element={<Cart />} />
-          <Route path="login" element={<Login />} />
+          <Route path="/product/:productId" element={<Product />} />
+          <Route path="/cart-page" element={<Cart />} />
+          <Route path="/login" element={<Login />} />
         </Routes>
         <Footer />
       </BrowserRouter>
