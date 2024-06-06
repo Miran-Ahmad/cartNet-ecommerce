@@ -205,6 +205,28 @@ app.get('/popularproducts', async (req, res) => {
     }
 });
 
+// Endpoint for popular products in cosmetics
+app.get('/popularproducts', async (req, res) => {
+    try {
+        let products = await Product.find({ category: "electronics" });
+        let popularproducts = products.slice(0, 4);
+        res.send(popularproducts);
+    } catch (error) {
+        res.status(500).json({ success: false, error: error.message });
+    }
+});
+
+// Endpoint for popular products in cosmetics
+app.get('/popularproducts', async (req, res) => {
+    try {
+        let products = await Product.find({ category: "cosmetics" });
+        let popularproducts = products.slice(0, 4);
+        res.send(popularproducts);
+    } catch (error) {
+        res.status(500).json({ success: false, error: error.message });
+    }
+});
+
 // Middleware to fetch user
 const fetchUser = async (req, res, next) => {
     const token = req.header('auth-token');
@@ -232,6 +254,7 @@ app.post('/addtocart', fetchUser, async (req, res) => {
     }
 });
 
+//product details
 app.get('/products/:productId', (req, res) => {
     const productId = parseInt(req.params.productId);
     const product = allProducts.find(p => p.id === productId);
